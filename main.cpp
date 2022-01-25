@@ -91,6 +91,11 @@ int main(int argc, char **argv)
 
 	window.onMouseDown([&](int button, int x, int y) {
 		if (button == 1) {
+			static const auto update_direction = [&](int xt, int yt) {
+				if (level.get(xt, yt) > 0)
+					level.set(xt, yt, ChooseDirection(level, xt, yt));
+			};
+
 			float mx = x / Scale + xOffs;
 			float my = y / Scale + yOffs;
 			Point2D tilePos = screenToTile({ mx, my });
@@ -102,6 +107,11 @@ int main(int argc, char **argv)
 				else tile = ChooseDirection(level, tilePos.x, tilePos.y);
 
 				level.set(tilePos.x, tilePos.y, tile);
+
+				update_direction(tilePos.x - 1, tilePos.y);
+				update_direction(tilePos.x + 1, tilePos.y);
+				update_direction(tilePos.x, tilePos.y - 1);
+				update_direction(tilePos.x, tilePos.y + 1);
 			}
 		} else if (button == 2 && !isDragging) {
 			xDrag = x;
