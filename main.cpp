@@ -4,6 +4,7 @@
 #include "window.h"
 #include "bitmap.h"
 #include "level.h"
+#include "train.h"
 
 struct Point2D {
 	float x, y;
@@ -89,6 +90,8 @@ int main(int argc, char **argv)
 	int xDrag, yDrag;
 	bool isDragging = false;
 
+	TrainCar car(0, 0);
+
 	window.onMouseDown([&](int button, int x, int y) {
 		if (button == 1) {
 			static const auto update_direction = [&](int xt, int yt) {
@@ -117,6 +120,12 @@ int main(int argc, char **argv)
 			xDrag = x;
 			yDrag = y;
 			isDragging = true;
+		} else {
+			float mx = x / Scale + xOffs;
+			float my = y / Scale + yOffs;
+			auto pos = screenToTile({ mx, my });
+			car.x = pos.x;
+			car.y = pos.y;
 		}
 	});
 
@@ -137,6 +146,8 @@ int main(int argc, char **argv)
 	while (!window.shouldClose()) {
 		window.update();
 		DrawLevel(bitmap, tiles, level, xOffs, yOffs);
+		car.update(level);
+		car.draw(bitmap, xOffs, yOffs);
 		window.draw(bitmap);
 	}
 
