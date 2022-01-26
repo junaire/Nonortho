@@ -18,11 +18,11 @@ private:
 
 enum RailDirection {
 	NorthSouth = 1,
-	EastWest = 2,
-	SouthEast = 3,
-	SouthWest = 4,
-	NorthWest = 5,
-	NorthEast = 6,
+	EastWest,
+	SouthEast,
+	SouthWest,
+	NorthWest,
+	NorthEast,
 };
 
 RailDirection ChooseDirection(Level& level, int x, int y);
